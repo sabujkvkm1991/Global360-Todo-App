@@ -1,0 +1,23 @@
+@if (todos().length > 0) {
+  <ul class="todo-list">
+    @for (todo of todos(); track todo.id) {
+      <li class="todo-list__item">
+        <span class="todo-list__title">{{ todo.title }}</span>
+        <time class="todo-list__date" [attr.datetime]="todo.createdAt">
+          {{ todo.createdAt | date: 'MMM d, h:mm a' }}
+        </time>
+        <button
+          class="button button--ghost"
+          type="button"
+          [disabled]="deletingIds().has(todo.id)"
+          [attr.aria-label]="'Delete ' + todo.title"
+          (click)="remove.emit(todo.id)"
+        >
+          {{ deletingIds().has(todo.id) ? 'Deleting…' : 'Delete' }}
+        </button>
+      </li>
+    }
+  </ul>
+} @else {
+  <p class="todo-list__empty">Nothing to do yet. Add your first item above.</p>
+}

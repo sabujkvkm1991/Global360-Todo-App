@@ -1,0 +1,27 @@
+<form class="todo-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <label class="visually-hidden" for="todo-title">New item</label>
+  <input
+    id="todo-title"
+    class="todo-form__input"
+    type="text"
+    placeholder="What needs to be done?"
+    autocomplete="off"
+    formControlName="title"
+    [attr.maxlength]="maxLength"
+    [attr.aria-invalid]="title.invalid && title.touched"
+    aria-describedby="todo-title-error"
+  />
+  <button class="button button--primary" type="submit" [disabled]="busy()">
+    {{ busy() ? 'Adding…' : 'Add' }}
+  </button>
+</form>
+
+<p id="todo-title-error" class="todo-form__error" role="alert">
+  @if (title.touched && title.invalid) {
+    @if (title.hasError('maxlength')) {
+      Keep it under {{ maxLength }} characters.
+    } @else {
+      Please enter a description for the item.
+    }
+  }
+</p>

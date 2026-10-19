@@ -1,0 +1,39 @@
+<section class="todo-page" aria-labelledby="todo-page-heading">
+  <header class="todo-page__header">
+    <h1 id="todo-page-heading">My TODO list</h1>
+    @if (!store.loading()) {
+      <span class="todo-page__count">{{ countLabel() }}</span>
+    }
+  </header>
+
+  <app-todo-form [busy]="store.adding()" (submitted)="add($event)" />
+
+  @if (store.error(); as error) {
+    <div class="todo-page__banner" role="alert">
+      <span>{{ error }}</span>
+      <div class="todo-page__banner-actions">
+        @if (store.todos().length === 0 && !store.loading()) {
+          <button class="button button--ghost" type="button" (click)="store.load()">Retry</button>
+        }
+        <button
+          class="button button--ghost"
+          type="button"
+          aria-label="Dismiss error"
+          (click)="store.clearError()"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (store.loading()) {
+    <p class="todo-page__loading" aria-live="polite">Loading…</p>
+  } @else {
+    <app-todo-list
+      [todos]="store.todos()"
+      [deletingIds]="store.deletingIds()"
+      (remove)="remove($event)"
+    />
+  }
+</section>
